@@ -2,7 +2,7 @@
   description = "Projeto Galeria BC";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/unstable";
   };
 
   outputs = {nixpkgs, ...}: let

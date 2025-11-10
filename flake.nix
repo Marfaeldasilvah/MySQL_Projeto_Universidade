@@ -11,10 +11,10 @@
   in {
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
+	gh
         sqls
 	ruff
 	python313
-	github-cli
 	python313Packages.flask
       ];
 

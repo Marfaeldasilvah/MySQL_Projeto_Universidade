@@ -1,5 +1,5 @@
 {
-  description = "MySQL";
+  description = "Projeto Galeria BC";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -12,7 +12,8 @@
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
         sqls
-        sqruff
+	python313
+	python313Packages.flask
       ];
 
       shellHook = ''

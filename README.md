@@ -24,3 +24,10 @@ Já feito?
 - Boostrap inicial
 - Conexão com MariaDB
 
+## -- Coisas sendo usadas no moemnto -- (Obrigatórias)
+
+- mariadb
+- python313
+- flask
+- flask-sqlalchemy
+

@@ -2,24 +2,25 @@
   description = "Projeto Galeria BC";
 
   inputs = {
-     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   outputs = {nixpkgs, ...}: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
   in {
+    formatter.${system} = pkgs.alejandra;
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
-	gh
+        gh
         sqls
-	ruff
-	prettier
-	python313
-	python313Packages.flask
-	typescript-language-server
-	vscode-langservers-extracted
+        ruff
+        prettier
+        python313
+        python313Packages.flask
+        python313Packages.flask-sqlalchemy
+        typescript-language-server
+        vscode-langservers-extracted
       ];
 
       shellHook = ''

@@ -7,6 +7,7 @@ Draft de PR (Implementação Flask!)
 
 - Separar a página (web) em (3) seguimentos
 - Colocar mais imagen em Obras.image_link 
+- Fazer um menu (web) para editar dados do mariadb
 
 
 Web?
@@ -23,6 +24,9 @@ Já feito?
 
 - Boostrap inicial
 - Conexão com MariaDB
+- boostrap carrousel
+- style base
+- correção de erros
 
 ## -- Coisas sendo usadas no moemnto -- (Obrigatórias)
 
@@ -30,4 +34,5 @@ Já feito?
 - python313
 - flask
 - flask-sqlalchemy
+- boostrap
 

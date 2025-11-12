@@ -40,3 +40,5 @@ Já feito?
 
 - Meu glorius and beloved NIX!
 - _Apenas seja imutavel e reproduzivel"_, Brutal.
+
+// Fazendo atualmente: Opção de ver todas as obras.

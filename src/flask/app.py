@@ -13,12 +13,12 @@ db = SQLAlchemy(app)
 
 # --- Modelos do Banco de Dados ---
 
+
 class Artista(db.Model):
     __tablename__ = "artistas"
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(255), nullable=False)
-    # Vou usar 'periodo_atuacao' para ser consistente com seu modelo
-    periodo_atuacao = db.Column(db.String(255)) 
+    periodo_atuacao = db.Column(db.String(255))
     nacionalidade = db.Column(db.String(255))
 
 
@@ -27,16 +27,23 @@ class Obras(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     artista_id = db.Column(db.Integer, db.ForeignKey("artistas.id"), nullable=False)
     nome = db.Column(db.String(255), nullable=False)
-    link_image = db.Column(db.String(255), nullable=False) # Adicionei isso de volta
+    link_image = db.Column(db.String(255), nullable=False)  # Adicionei isso de volta
     ano = db.Column(db.Integer)
 
 
 # --- Rotas da Aplicação ---
 
+
 @app.route("/")
 def index(name=None):
     obras = Obras.query.all()
     return render_template("index.html", obras=obras)
+
+
+@app.route("/obras")
+def artes():
+    obras = Obras.query.all()
+    return render_template("obras.html", obras=obras)
 
 
 @app.route("/artistas")
@@ -46,13 +53,13 @@ def artistas():
 
 
 # --- ROTA /add_artista (CORRIGIDA) ---
-@app.route("/add_artista", methods=["GET", "POST"]) # Era @app.router
+@app.route("/add_artista", methods=["GET", "POST"])  # Era @app.router
 def add_artista():
     if request.method == "GET":
         # Você precisa passar a lista de artistas para o template
-        lista_artistas = Artista.query.all() 
+        lista_artistas = Artista.query.all()
         return render_template("add_artista.html", artistas=lista_artistas)
-    
+
     if request.method == "POST":
         # O 'try' deve ficar DENTRO do 'POST'
         novo_artista = None
@@ -60,7 +67,7 @@ def add_artista():
             # Pegue os dados do formulário (sem a vírgula no final!)
             nome_artista = request.form.get("nome")
             # Use 'periodo_atuacao' para bater com o modelo
-            periodo_artista = request.form.get("periodo_atuacao") 
+            periodo_artista = request.form.get("periodo_atuacao")
             nacionalidade_artista = request.form.get("nacionalidade")
 
             # Validação
@@ -74,7 +81,7 @@ def add_artista():
             novo_artista = Artista(
                 nome=nome_artista,
                 periodo_atuacao=periodo_artista,
-                nacionalidade=nacionalidade_artista
+                nacionalidade=nacionalidade_artista,
             )
 
             # Adicione e salve no banco
@@ -95,7 +102,7 @@ def add_art():
     if request.method == "GET":
         artistas = Artista.query.all()
         return render_template("add_art.html", artistas=artistas)
-    
+
     if request.method == "POST":
         nova_obra = None
         try:
@@ -112,7 +119,7 @@ def add_art():
 
             ano_int = int(ano_obra) if ano_obra else None
             artista_id_int = int(artista_id_obra)
-            
+
             nova_obra = Obras(
                 nome=nome_obra,
                 ano=ano_int,
@@ -133,6 +140,7 @@ def add_art():
             db.session.rollback()
             return f"Um erro inesperado ocorreu: {e}", 500
 
+
 # Permite rodar com "python app.py"
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

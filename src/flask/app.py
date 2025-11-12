@@ -41,7 +41,7 @@ def index(name=None):
 
 
 @app.route("/obras")
-def artes():
+def obras():
     obras = Obras.query.all()
     return render_template("obras.html", obras=obras)
 

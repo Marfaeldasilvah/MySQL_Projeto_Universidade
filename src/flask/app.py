@@ -11,6 +11,28 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
+# --- Modelos do Banco de Dados ---
+
+class Artista(db.Model):
+    __tablename__ = "artistas"
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(255), nullable=False)
+    # Vou usar 'periodo_atuacao' para ser consistente com seu modelo
+    periodo_atuacao = db.Column(db.String(255)) 
+    nacionalidade = db.Column(db.String(255))
+
+
+class Obras(db.Model):
+    __tablename__ = "obras"
+    id = db.Column(db.Integer, primary_key=True)
+    artista_id = db.Column(db.Integer, db.ForeignKey("artistas.id"), nullable=False)
+    nome = db.Column(db.String(255), nullable=False)
+    link_image = db.Column(db.String(255), nullable=False) # Adicionei isso de volta
+    ano = db.Column(db.Integer)
+
+
+# --- Rotas da Aplicação ---
+
 @app.route("/")
 def index(name=None):
     obras = Obras.query.all()
@@ -23,32 +45,74 @@ def artistas():
     return render_template("artistas.html", artistas=artistas)
 
 
+# --- ROTA /add_artista (CORRIGIDA) ---
+@app.route("/add_artista", methods=["GET", "POST"]) # Era @app.router
+def add_artista():
+    if request.method == "GET":
+        # Você precisa passar a lista de artistas para o template
+        lista_artistas = Artista.query.all() 
+        return render_template("add_artista.html", artistas=lista_artistas)
+    
+    if request.method == "POST":
+        # O 'try' deve ficar DENTRO do 'POST'
+        novo_artista = None
+        try:
+            # Pegue os dados do formulário (sem a vírgula no final!)
+            nome_artista = request.form.get("nome")
+            # Use 'periodo_atuacao' para bater com o modelo
+            periodo_artista = request.form.get("periodo_atuacao") 
+            nacionalidade_artista = request.form.get("nacionalidade")
+
+            # Validação
+            if not nome_artista or not periodo_artista or not nacionalidade_artista:
+                return (
+                    "Erro: Informações: Nome, nacionalidade e período de atuação são obrigatórios.",
+                    400,
+                )
+
+            # Crie o novo objeto Artista
+            novo_artista = Artista(
+                nome=nome_artista,
+                periodo_atuacao=periodo_artista,
+                nacionalidade=nacionalidade_artista
+            )
+
+            # Adicione e salve no banco
+            db.session.add(novo_artista)
+            db.session.commit()
+
+            # Redirecione para a lista de artistas
+            return redirect(url_for("artistas"))
+
+        except Exception as e:
+            db.session.rollback()
+            return f"Um erro inesperado ocorreu: {e}", 500
+
+
+# --- Rota /add (Corrigida e Limpa) ---
 @app.route("/add", methods=["GET", "POST"])
 def add_art():
     if request.method == "GET":
         artistas = Artista.query.all()
         return render_template("add_art.html", artistas=artistas)
+    
     if request.method == "POST":
         nova_obra = None
-
         try:
-            # 1. Pegar os dados do formulário
             nome_obra = request.form.get("nome")
             ano_obra = request.form.get("ano")
             link_obra = request.form.get("link_image")
             artista_id_obra = request.form.get("artista_id")
 
-            # Checa se os campos obrigatórios não estão vazios
             if not nome_obra or not link_obra or not artista_id_obra:
                 return (
                     "Erro: Nome da Obra, Link da Imagem e Artista são obrigatórios.",
                     400,
                 )
 
-            # Converte os números. Permite que 'ano' seja vazio
             ano_int = int(ano_obra) if ano_obra else None
             artista_id_int = int(artista_id_obra)
-            # 2. Criar o novo objeto Obras
+            
             nova_obra = Obras(
                 nome=nome_obra,
                 ano=ano_int,
@@ -56,38 +120,19 @@ def add_art():
                 artista_id=artista_id_int,
             )
 
-            # 3. Adicionar e salvar no banco
             db.session.add(nova_obra)
             db.session.commit()
 
-            # 4. Redirecionar de volta para a página inicial
             return redirect(url_for("index"))
 
         except ValueError:
-            # Erro específico se a conversão int() falhar (ex: digitou "abc" no ano)
             db.session.rollback()
             return "Erro: O 'Ano' ou 'ID do Artista' parece ser inválido.", 400
 
         except Exception as e:
-            # Pega qualquer outro erro (ex: falha de conexão com o banco)
-            db.session.rollback()  # Desfaz qualquer mudança pendente
-
-            # Este 'except' agora é seguro e não causará o UnboundLocalError
+            db.session.rollback()
             return f"Um erro inesperado ocorreu: {e}", 500
 
-
-class Artista(db.Model):
-    __tablename__ = "artistas"
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(255), nullable=False)
-    periodo_atuacao = db.Column(db.String(255))
-    nacionalidade = db.Column(db.String(255))
-
-
-class Obras(db.Model):
-    __tablename__ = "obras"
-    id = db.Column(db.Integer, primary_key=True)
-    artista_id = db.Column(db.Integer, db.ForeignKey("artistas.id"), nullable=False)
-    nome = db.Column(db.String(255), nullable=False)
-    link_image = db.Column(db.String(255), nullable=False)
-    ano = db.Column(db.Integer)
+# Permite rodar com "python app.py"
+if __name__ == '__main__':
+    app.run(debug=True)

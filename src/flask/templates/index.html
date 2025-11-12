@@ -15,8 +15,15 @@
             <h1>Obras Famosas</h1>
 
             <a href="{{ url_for('add_art') }}" class="btn btn-primary mb-3">
-                + Adicionar Nova Arte
+                + Adicionar Nova Arte.
             </a>
+	    <a href="{{ url_for('add_artista') }}" class="btn btn-info ms-2">
+                    + Adicionar Novo Artista.
+            </a>
+	    	    <a href="{{ url_for('artistas') }}" class="btn btn-info ms-2">
+                    + Ver todos os artistas.
+            </a>
+
 
             <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
                 

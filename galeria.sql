@@ -4,7 +4,7 @@ USE Galeria;
 CREATE TABLE IF NOT EXISTS artistas (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  periodo_atuacao VARCHAR(255),
+  anos_de_atuacao VARCHAR(255),
   nacionalidade VARCHAR(255)
 );
 

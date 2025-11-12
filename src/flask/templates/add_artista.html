@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Adicionar Artista</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    </head>
+    <body>
+        
+        <div class="container mt-4">
+            <h1>Adicionar Novo Artista</h1>
+            
+            <!-- O formulário aponta para a rota 'add_artista' com método POST -->
+            <form action="{{ url_for('add_artista') }}" method="POST">
+                
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome do Artista</label>
+                    <!-- o 'name' deve ser igual ao 'request.form.get()' -->
+                    <input type="text" class="form-control" id="nome" name="nome" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="periodo_atuacao" class="form-label">Período de Atuação</label>
+                    <!-- 'name' é 'periodo_atuacao' para bater com o modelo -->
+                    <input type="text" class="form-control" id="periodo_atuacao" name="periodo_atuacao" placeholder="Ex: 1853-1890">
+                </div>
+
+                <div class="mb-3">
+                    <label for="nacionalidade" class="form-label">Nacionalidade</label>
+                    <input type="text" class="form-control" id="nacionalidade" name="nacionalidade" placeholder="Ex: Holandês" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">Salvar Artista</button>
+                <a href="{{ url_for('artistas') }}" class="btn btn-secondary">Cancelar</a>
+
+            </form>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </body>
+</html>

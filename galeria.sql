@@ -1,11 +1,7 @@
 CREATE DATABASE IF NOT EXISTS Galeria;
 USE Galeria;
 
-<<<<<<< HEAD
-CREATE TABLE artistas (
-=======
 CREATE TABLE IF NOT EXISTS artistas (
->>>>>>> local/master
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
   anos_de_atuacao VARCHAR(255),

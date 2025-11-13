@@ -12,6 +12,7 @@
     formatter.${system} = pkgs.alejandra;
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
+	gh
         sqls
         ruff
         prettier

@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS obras (
   id INT AUTO_INCREMENT PRIMARY KEY,
   artista_id INT NOT NULL,
   nome VARCHAR(255) NOT NULL,
+  link_image VARCHAR(255) NOT NULL,
   ano INT,
   FOREIGN KEY (artista_id) REFERENCES artistas(id)
 );

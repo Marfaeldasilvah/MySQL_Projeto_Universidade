@@ -148,10 +148,13 @@ def add_art():
             return f"Um erro inesperado ocorreu: {e}", 500
 
 
-# Para incrementação de DESC como opção...
-with app.app_context():
-    db.drop_all()
-    db.create_all()
+def reset_db():
+    print("Reset de DB")
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+    print("Feito.")
+
 
 # Permite rodar com "python app.py"
 if __name__ == "__main__":

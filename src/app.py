@@ -29,6 +29,7 @@ class Obras(db.Model):
     link_image = db.Column(db.String(255), nullable=False)
     desc = db.Column(db.Text, nullable=True)
     ano = db.Column(db.Integer)
+    artista = db.relationship('Artista', backref='obras')
 
 
 # urls
@@ -118,7 +119,7 @@ def add_art():
 
             nova_obra = Obras(
                 nome=nome_obra,
-                dessc=desc_obra,
+                desc=desc_obra,
                 ano=ano_int,
                 link_image=link_obra,
                 artista_id=artista_id_int,

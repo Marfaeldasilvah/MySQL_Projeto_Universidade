@@ -1,14 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     "mariadb+mariadbconnector://rPlakama:jaquksww@localhost/Galeria"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-db = SQLAlchemy(app)
 
 
 class Artista(db.Model):
@@ -148,14 +149,5 @@ def add_art():
             return f"Um erro inesperado ocorreu: {e}", 500
 
 
-def reset_db():
-    print("Reset de DB")
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
-    print("Feito.")
-
-
-# Permite rodar com "python app.py"
 if __name__ == "__main__":
     app.run(debug=True)

@@ -14,14 +14,16 @@
       buildInputs = with pkgs; [
 	gh
         sqls
-        ruff
         prettier
+	typescript-language-server
+        vscode-langservers-extracted
+	# Python stuff...
+	ruff
         python313
 	python313Packages.mariadb
-        python313Packages.flask
         python313Packages.flask-sqlalchemy
-        typescript-language-server
-        vscode-langservers-extracted
+	python313Packages.flask-migrate
+	python313Packages.flask
       ];
 
       shellHook = ''

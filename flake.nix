@@ -12,19 +12,16 @@
     formatter.${system} = pkgs.alejandra;
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
-#git + lsps
 	gh
         sqls
         ruff
-	vscode-langservers-extracted
-	typescript-language-server
         prettier
-#python
         python313
 	python313Packages.mariadb
         python313Packages.flask
         python313Packages.flask-sqlalchemy
-
+        typescript-language-server
+        vscode-langservers-extracted
       ];
 
       shellHook = ''

@@ -11,24 +11,25 @@
         <div class="container mt-4">
             <h1>Adicionar Novo Artista</h1>
             
+            <!-- O formulário aponta para a rota 'add_artista' com método POST -->
             <form action="{{ url_for('add_artista') }}" method="POST">
                 
                 <div class="mb-3">
                     <label for="nome" class="form-label">Nome do Artista</label>
-		    {% set existing_names = lista_artistas | map(attribute='nome') | list %}
-		    {% set nao_ser_existente = "^(?!(" ~ existing_names | join('|') ~ ")$).*$" %}
-		    <input type="text" class="form-control" id="nome" name="nome" partten="{{ nao_ser_existente }}" required>
+                    <!-- o 'name' deve ser igual ao 'request.form.get()' -->
+                    <input type="text" class="form-control" id="nome" name="nome" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="periodo_atuacao" class="form-label">Período de Atuação</label>
+                    <!-- 'name' é 'periodo_atuacao' para bater com o modelo -->
                     <input type="text" class="form-control" id="periodo_atuacao" name="periodo_atuacao" placeholder="Ex: 1853-1890">
                 </div>
 
                 <div class="mb-3">
                     <label for="nacionalidade" class="form-label">Nacionalidade</label>
                     <input type="text" class="form-control" id="nacionalidade" name="nacionalidade" placeholder="Ex: Holandês" required>
-            </div>
+                </div>
 
                 <button type="submit" class="btn btn-success">Salvar Artista</button>
                 <a href="{{ url_for('artistas') }}" class="btn btn-secondary">Cancelar</a>

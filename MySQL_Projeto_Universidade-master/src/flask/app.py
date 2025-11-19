@@ -38,8 +38,12 @@ def index(name=None):
 
 @app.route("/obras")
 def obras():
-    obras = Obras.query.all()
-    return render_template("obras.html", obras=obras)
+    artes = [
+        {"titulo": "Arte 1", "desc": "Descrição da arte 1",},
+        {"titulo": "Arte 2", "desc": "Descrição da arte 2",},
+        {"titulo": "Arte 3", "desc": "Descrição da arte 3",}
+    ]
+    return render_template('obras.html', artes=artes)
 
 
 @app.route("/artistas")

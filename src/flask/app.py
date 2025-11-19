@@ -10,6 +10,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
+
 class Artista(db.Model):
     __tablename__ = "artistas"
     id = db.Column(db.Integer, primary_key=True)
@@ -23,7 +24,8 @@ class Obras(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     artista_id = db.Column(db.Integer, db.ForeignKey("artistas.id"), nullable=False)
     nome = db.Column(db.String(255), nullable=False)
-    link_image = db.Column(db.String(255), nullable=False)  
+    link_image = db.Column(db.String(255), nullable=False)
+    desc = db.Column(db.Text, nullable=True)
     ano = db.Column(db.Integer)
 
 
@@ -38,12 +40,22 @@ def index(name=None):
 
 @app.route("/obras")
 def obras():
-    artes = [
-        {"titulo": "Arte 1", "desc": "Descrição da arte 1",},
-        {"titulo": "Arte 2", "desc": "Descrição da arte 2",},
-        {"titulo": "Arte 3", "desc": "Descrição da arte 3",}
-    ]
-    return render_template('obras.html', artes=artes)
+    # Non-dynamic, vou trabalhar ainda sobre isso... Sendo declarativo assim, não irá funcionar.
+    # artes = [
+    #    {
+    #        "titulo": "Arte 1",
+    #        "desc": "Descrição da arte 1",
+    #    },
+    #    {
+    #        "titulo": "Arte 2",
+    #        "desc": "Descrição da arte 2",
+    #    },
+    #    {
+    #        "titulo": "Arte 3",
+    #        "desc": "Descrição da arte 3",
+    #    },
+    # ]
+    return render_template("obras.html", obras=obras)
 
 
 @app.route("/artistas")
@@ -53,7 +65,7 @@ def artistas():
 
 
 # formulário de artista
-@app.route("/add_artista", methods=["GET", "POST"])  
+@app.route("/add_artista", methods=["GET", "POST"])
 def add_artista():
     if request.method == "GET":
         lista_artistas = Artista.query.all()
@@ -135,6 +147,11 @@ def add_art():
             db.session.rollback()
             return f"Um erro inesperado ocorreu: {e}", 500
 
+
+# Para incrementação de DESC como opção...
+with app.app_context():
+    db.drop_all()
+    db.create_all()
 
 # Permite rodar com "python app.py"
 if __name__ == "__main__":
